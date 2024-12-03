@@ -1,0 +1,11 @@
+SQL
+
+HOLD(idHold,*idHoldType,*idHoldColor $idClientLevel,weight,sizeMeters,imageURL)
+HOLD_TYPE(idHoldType,holdTypeName) //sloper, jug, crimp, pinch, pocket
+HOLD_COLOR(idHoldColor,holdColorName)
+
+CLIENT(idClient,firstName,lastName,email,dateOfBirth,*idLevel)
+CLIENT_LEVEL(idLevel,name)
+
+ORDER(idOrder,dateOrder,totalPrice,*idUser)
+ORDER_LINE(*idOrder,*idHold)
