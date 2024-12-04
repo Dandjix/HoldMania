@@ -1,10 +1,3 @@
-//
-//  HoldDetailView.swift
-//  HoldMania
-//
-//  Created by unger tristan on 04/12/2024.
-//
-
 import SwiftUI
 
 struct HoldDetailView: View {
@@ -12,19 +5,43 @@ struct HoldDetailView: View {
 
     var body: some View {
         VStack {
-            Image(hold.imageURL)
-                .resizable()
-                .frame(width: 200, height: 200)
-                .clipShape(Circle())
-            Text(hold.type)
+            // Affiche l'image depuis l'URL avec un gestionnaire de chargement
+            AsyncImage(url: hold.imageURL) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(width: 200, height: 200)
+                case .success(let image):
+                    image
+                        .resizable()
+                        .frame(width: 200, height: 200)
+                        .clipShape(Circle())
+                case .failure:
+                    Image(systemName: "photo")
+                        .resizable()
+                        .frame(width: 200, height: 200)
+                        .clipShape(Circle())
+                        .foregroundColor(.gray)
+                @unknown default:
+                    EmptyView()
+                }
+            }
+
+            // Affiche les informations détaillées
+            Text(hold.name)
                 .font(.largeTitle)
                 .bold()
-            Text("Poids: \(hold.weight)g")
-            Text("Taille: \(hold.size)")
-            Text("Prix: \(hold.price, specifier: "%.2f") €")
+            Text("Type : \(hold.holdTypeName)")
+                .font(.headline)
+            Text("Couleur : \(hold.holdColorName)")
+            Text("Niveau : \(hold.clientLevelName)")
+            Text("Taille : \(hold.sizeMeters, specifier: "%.2f") m")
+            Text("Poids : \(hold.weight, specifier: "%.2f") kg")
+            Text("Prix : \(hold.price, specifier: "%.2f") €")
             
+            // Bouton pour ajouter au panier
             Button(action: {
-                // Ajouter au panier (à implémenter)
+                // Action pour ajouter au panier (à implémenter)
             }) {
                 Text("Ajouter au panier")
                     .padding()
@@ -34,9 +51,7 @@ struct HoldDetailView: View {
             }
             .padding()
         }
-        .navigationTitle("Détails")
+        .navigationTitle("Détails de la Prise")
+        .padding()
     }
 }
-
-
-

@@ -9,9 +9,12 @@ import Foundation
 
 struct Hold: Identifiable {
     var id: Int
-    var type: String
-    var weight: Int
-    var size: String
+    var name: String
+    var holdTypeName: String
+    var holdColorName: String
+    var clientLevelName: String
+    var sizeMeters: Double
+    var weight: Double
     var price: Double
-    var imageURL: String
+    var imageURL: URL
 }

@@ -9,8 +9,7 @@ import Foundation
 
 class HomeViewModel: ObservableObject {
     @Published var holds: [Hold] = [
-        Hold(id: 1, type: "Jug", weight: 500, size: "Large", price: 19.99, imageURL: "jug1"),
-        Hold(id: 2, type: "Crimp", weight: 200, size: "Small", price: 9.99, imageURL: "crimp1"),
-        Hold(id: 3, type: "Sloper", weight: 350, size: "Medium", price: 14.99, imageURL: "sloper1")
+        Hold(id: 1, name: "La prise du dragon", holdTypeName: "Jug", holdColorName: "Rouge", clientLevelName: "Débutant", sizeMeters: 0.4, weight: 14.2, price: 120.14, imageURL: URL(string: "https://example.com/jug1.png")!),
+        Hold(id: 2, name: "La prise du dragon", holdTypeName: "Jug", holdColorName: "Rouge", clientLevelName: "Débutant", sizeMeters: 0.4, weight: 14.2, price: 120.14, imageURL: URL(string: "https://example.com/jug1.png")!)
     ]
 }

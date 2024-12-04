@@ -9,7 +9,9 @@ import Foundation
 
 struct User: Identifiable {
     var id: Int
+    var firstname: String
     var name: String
     var email: String
+    var dateOfBirth: Date
     var phone: String
 }

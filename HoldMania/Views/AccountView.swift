@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AccountView: View {
-    @State private var name: String = "John Doe"
+    @State private var name: String = "Doe"
+    @State private var firstname: String = "John"
     @State private var email: String = "johndoe@example.com"
     @State private var phone: String = "123-456-7890"
     
@@ -17,6 +18,7 @@ struct AccountView: View {
             Form {
                 Section(header: Text("Informations personnelles")) {
                     TextField("Nom", text: $name)
+                    TextField("Prénom", text: $firstname)
                     TextField("Email", text: $email)
                         .keyboardType(.emailAddress)
                     TextField("Téléphone", text: $phone)
