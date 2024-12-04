@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4B67BAE2D008BFF00567529 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAD2D008BFF00567529 /* User.swift */; };
+		C4B67BB02D008C1000567529 /* Hold.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAF2D008C1000567529 /* Hold.swift */; };
+		C4B67BB22D008C2300567529 /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB12D008C2300567529 /* CartItem.swift */; };
+		C4B67BB42D008C4D00567529 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB32D008C4D00567529 /* HomeViewModel.swift */; };
+		C4B67BB62D008C6C00567529 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB52D008C6C00567529 /* CartViewModel.swift */; };
+		C4B67BB82D008C8400567529 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB72D008C8400567529 /* HomeView.swift */; };
+		C4B67BBA2D008C9B00567529 /* HoldDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB92D008C9B00567529 /* HoldDetailView.swift */; };
+		C4B67BBE2D008D0200567529 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BBD2D008D0200567529 /* CartView.swift */; };
+		C4B67BC02D008D1700567529 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BBF2D008D1700567529 /* AccountView.swift */; };
 		FF58A5982CFF590C00B36DDE /* HoldManiaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF58A5972CFF590C00B36DDE /* HoldManiaApp.swift */; };
 		FF58A59A2CFF590C00B36DDE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF58A5992CFF590C00B36DDE /* ContentView.swift */; };
 		FF58A59C2CFF590D00B36DDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF58A59B2CFF590D00B36DDE /* Assets.xcassets */; };
@@ -14,6 +23,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4B67BAD2D008BFF00567529 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C4B67BAF2D008C1000567529 /* Hold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hold.swift; sourceTree = "<group>"; };
+		C4B67BB12D008C2300567529 /* CartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItem.swift; sourceTree = "<group>"; };
+		C4B67BB32D008C4D00567529 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		C4B67BB52D008C6C00567529 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
+		C4B67BB72D008C8400567529 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C4B67BB92D008C9B00567529 /* HoldDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldDetailView.swift; sourceTree = "<group>"; };
+		C4B67BBD2D008D0200567529 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		C4B67BBF2D008D1700567529 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		FF58A5942CFF590C00B36DDE /* HoldMania.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoldMania.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF58A5972CFF590C00B36DDE /* HoldManiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldManiaApp.swift; sourceTree = "<group>"; };
 		FF58A5992CFF590C00B36DDE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +50,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C4B67BAA2D008BB600567529 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C4B67BAD2D008BFF00567529 /* User.swift */,
+				C4B67BAF2D008C1000567529 /* Hold.swift */,
+				C4B67BB12D008C2300567529 /* CartItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C4B67BAB2D008BBB00567529 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C4B67BB72D008C8400567529 /* HomeView.swift */,
+				C4B67BB92D008C9B00567529 /* HoldDetailView.swift */,
+				C4B67BBD2D008D0200567529 /* CartView.swift */,
+				C4B67BBF2D008D1700567529 /* AccountView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C4B67BAC2D008BCF00567529 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C4B67BB32D008C4D00567529 /* HomeViewModel.swift */,
+				C4B67BB52D008C6C00567529 /* CartViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		FF58A58B2CFF590C00B36DDE = {
 			isa = PBXGroup;
 			children = (
@@ -51,6 +99,9 @@
 		FF58A5962CFF590C00B36DDE /* HoldMania */ = {
 			isa = PBXGroup;
 			children = (
+				C4B67BAC2D008BCF00567529 /* ViewModels */,
+				C4B67BAB2D008BBB00567529 /* Views */,
+				C4B67BAA2D008BB600567529 /* Models */,
 				FF58A5972CFF590C00B36DDE /* HoldManiaApp.swift */,
 				FF58A5992CFF590C00B36DDE /* ContentView.swift */,
 				FF58A59B2CFF590D00B36DDE /* Assets.xcassets */,
@@ -137,8 +188,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4B67BBE2D008D0200567529 /* CartView.swift in Sources */,
+				C4B67BB02D008C1000567529 /* Hold.swift in Sources */,
+				C4B67BB42D008C4D00567529 /* HomeViewModel.swift in Sources */,
+				C4B67BB62D008C6C00567529 /* CartViewModel.swift in Sources */,
+				C4B67BC02D008D1700567529 /* AccountView.swift in Sources */,
+				C4B67BBA2D008C9B00567529 /* HoldDetailView.swift in Sources */,
 				FF58A59A2CFF590C00B36DDE /* ContentView.swift in Sources */,
 				FF58A5982CFF590C00B36DDE /* HoldManiaApp.swift in Sources */,
+				C4B67BB82D008C8400567529 /* HomeView.swift in Sources */,
+				C4B67BB22D008C2300567529 /* CartItem.swift in Sources */,
+				C4B67BAE2D008BFF00567529 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
