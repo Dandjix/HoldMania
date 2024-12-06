@@ -27,7 +27,7 @@ struct HomeView: View {
                                     .frame(width: 50, height: 50)
                                     .clipShape(Circle())
                             case .failure:
-                                Image(systemName: "photo") // Affiche une icône si l'image échoue à se charger
+                                Image(systemName: "photo")
                                     .resizable()
                                     .frame(width: 50, height: 50)
                                     .clipShape(Circle())

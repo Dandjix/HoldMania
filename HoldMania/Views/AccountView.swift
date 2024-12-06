@@ -27,7 +27,7 @@ struct AccountView: View {
                 
                 Section {
                     Button(action: {
-                        // Action pour sauvegarder les modifications
+                        // Action pourææ sauvegarder les modifications
                     }) {
                         Text("Enregistrer")
                             .frame(maxWidth: .infinity, alignment: .center)
