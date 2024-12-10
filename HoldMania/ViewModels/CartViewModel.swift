@@ -9,7 +9,7 @@ import Foundation
 
 class CartViewModel: ObservableObject {
     @Published var items: [CartItem] = []
-    
+        
     var totalPrice: Double {
         items.reduce(0) { $0 + $1.totalPrice }
     }

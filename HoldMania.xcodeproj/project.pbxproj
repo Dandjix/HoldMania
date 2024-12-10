@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C43CE6C02D089785001F5C21 /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43CE6BF2D089785001F5C21 /* Constantes.swift */; };
 		C4B67BAE2D008BFF00567529 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAD2D008BFF00567529 /* User.swift */; };
 		C4B67BB02D008C1000567529 /* Hold.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAF2D008C1000567529 /* Hold.swift */; };
 		C4B67BB22D008C2300567529 /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB12D008C2300567529 /* CartItem.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C43CE6BF2D089785001F5C21 /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
 		C4B67BAD2D008BFF00567529 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C4B67BAF2D008C1000567529 /* Hold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hold.swift; sourceTree = "<group>"; };
 		C4B67BB12D008C2300567529 /* CartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItem.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				FF58A5992CFF590C00B36DDE /* ContentView.swift */,
 				FF58A59B2CFF590D00B36DDE /* Assets.xcassets */,
 				FF58A59D2CFF590D00B36DDE /* Preview Content */,
+				C43CE6BF2D089785001F5C21 /* Constantes.swift */,
 			);
 			path = HoldMania;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				C4B67BB42D008C4D00567529 /* HomeViewModel.swift in Sources */,
 				C4B67BB62D008C6C00567529 /* CartViewModel.swift in Sources */,
 				C4B67BC02D008D1700567529 /* AccountView.swift in Sources */,
+				C43CE6C02D089785001F5C21 /* Constantes.swift in Sources */,
 				C4B67BBA2D008C9B00567529 /* HoldDetailView.swift in Sources */,
 				FF58A59A2CFF590C00B36DDE /* ContentView.swift in Sources */,
 				FF58A5982CFF590C00B36DDE /* HoldManiaApp.swift in Sources */,

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CartView: View {
-    @StateObject private var cartViewModel = CartViewModel() // Écoute les changements
+    @EnvironmentObject var cartViewModel: CartViewModel
     
     var body: some View {
         NavigationView {
@@ -20,12 +20,11 @@ struct CartView: View {
                 } else {
                     List(cartViewModel.items) { item in
                         HStack {
-                            // Utilisation des propriétés corrigées
-                            Text(item.hold.name) // `name` au lieu de `type`
+                            Text(item.hold.name)
                             Spacer()
-                            Text("x\(item.quantity)") // Quantité d'articles
+                            Text("x\(item.quantity)")
                             Spacer()
-                            Text("\(item.totalPrice, specifier: "%.2f") €") // Prix total par article
+                            Text("\(item.totalPrice, specifier: "%.2f") €")
                         }
                     }
                     
@@ -42,6 +41,7 @@ struct CartView: View {
                     .foregroundColor(.white)
                     .cornerRadius(8)
                 }
+                
             }
             .navigationTitle("Panier")
         }

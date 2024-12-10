@@ -7,11 +7,14 @@
 
 import Foundation
 
-struct User: Identifiable {
-    var id: Int
-    var firstname: String
-    var name: String
-    var email: String
-    var dateOfBirth: Date
-    var phone: String
+struct User: Decodable {
+    let idClient: Int
+    let firstName: String
+    let lastName: String
+    let email: String
+    let dateOfBirth: String
+    let phoneNumber: String
+    let clientLevelName: String
+    let profilePictureURL: String
 }
+

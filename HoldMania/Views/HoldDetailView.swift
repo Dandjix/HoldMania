@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HoldDetailView: View {
+    @EnvironmentObject var cartViewModel: CartViewModel
+    
     var hold: Hold
 
     var body: some View {
@@ -41,7 +43,7 @@ struct HoldDetailView: View {
             
             // Bouton pour ajouter au panier
             Button(action: {
-                // Action pour ajouter au panier (à implémenter)
+                cartViewModel.addItem(hold: hold)
             }) {
                 Text("Ajouter au panier")
                     .padding()
