@@ -14,17 +14,25 @@ struct AccountView: View {
     @State private var phone: String = ""
     @State private var isLoading: Bool = false
     @State private var errorMessage: String? = nil
-    
+    @State private var isDataLoaded: Bool = false
+
     var body: some View {
             NavigationView {
                 Form {
-                    Section(header: Text("Informations personnelles")) {
-                        TextField("Nom", text: $name)
-                            .disabled(true)
-                        TextField("Prénom", text: $firstname)
-                            .disabled(true)
-                        TextField("Téléphone", text: $phone)
-                            .disabled(true)
+                    if isDataLoaded {
+                        
+                        Section(header: Text("Informations personnelles")) {
+                            TextField("Nom", text: $name)
+                                .disabled(true)
+                            TextField("Prénom", text: $firstname)
+                                .disabled(true)
+                            TextField("Téléphone", text: $phone)
+                                .disabled(true)
+                        }
+                    } else {
+                        Text("Veuillez vous connecter pour afficher vos informations.")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
                     }
                     
                     Section(header: Text("Entrez un email")) {
@@ -107,6 +115,7 @@ struct AccountView: View {
             email = user.email
             phone = user.phoneNumber
             errorMessage = nil
+            isDataLoaded = true
         }
     }
 
