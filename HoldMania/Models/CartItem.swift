@@ -13,6 +13,6 @@ struct CartItem: Identifiable {
     var quantity: Int
     
     var totalPrice: Double {
-        return Double(quantity) * hold.price
+        return Double(quantity) * (hold.priceAsDouble ?? 0.0)
     }
 }

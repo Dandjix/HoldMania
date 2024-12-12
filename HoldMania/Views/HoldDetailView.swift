@@ -8,38 +8,31 @@ struct HoldDetailView: View {
     var body: some View {
         VStack {
             // Affiche l'image depuis l'URL avec un gestionnaire de chargement
-            AsyncImage(url: hold.imageURL) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                        .frame(width: 200, height: 200)
-                case .success(let image):
-                    image
-                        .resizable()
-                        .frame(width: 200, height: 200)
-                        .clipShape(Circle())
-                case .failure:
-                    Image(systemName: "photo")
-                        .resizable()
-                        .frame(width: 200, height: 200)
-                        .clipShape(Circle())
-                        .foregroundColor(.gray)
-                @unknown default:
-                    EmptyView()
-                }
+            if UIImage(named: hold.imageURL) != nil {
+                Image(hold.imageURL)
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+            } else {
+                // Utilisation d'une icône SF Symbol par défaut
+                Image(systemName: "photo.fill")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+                    .foregroundColor(.gray)
             }
 
             // Affiche les informations détaillées
-            Text(hold.name)
+            Text(hold.holdName)
                 .font(.largeTitle)
                 .bold()
             Text("Type : \(hold.holdTypeName)")
                 .font(.headline)
             Text("Couleur : \(hold.holdColorName)")
             Text("Niveau : \(hold.clientLevelName)")
-            Text("Taille : \(hold.sizeMeters, specifier: "%.2f") m")
-            Text("Poids : \(hold.weight, specifier: "%.2f") kg")
-            Text("Prix : \(hold.price, specifier: "%.2f") €")
+            Text("Taille : \((hold.sizeMetersAsDouble ?? 0.0), specifier: "%.2f") m")
+            Text("Poids : \((hold.weightAsDouble ?? 0.0), specifier: "%.2f") kg")
+            Text("Prix : \((hold.priceAsDouble ?? 0.0), specifier: "%.2f") €")
             
             // Bouton pour ajouter au panier
             Button(action: {

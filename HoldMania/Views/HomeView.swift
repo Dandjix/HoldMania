@@ -12,48 +12,53 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.holds) { hold in
-                NavigationLink(destination: HoldDetailView(hold: hold)) {
-                    HStack {
-                        // Chargement d'une image à partir de l'URL
-                        AsyncImage(url: hold.imageURL) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView() // Affiche un indicateur de chargement
-                                    .frame(width: 50, height: 50)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(Circle())
-                            case .failure:
-                                Image(systemName: "photo")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(Circle())
-                                    .foregroundColor(.gray)
-                            @unknown default:
-                                EmptyView()
+            VStack {
+                if viewModel.isLoading {
+                    ProgressView("Chargement des prises...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                } else if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                } else {
+                    List(viewModel.holds) { hold in
+                        NavigationLink(destination: HoldDetailView(hold: hold)) {
+                            HStack {
+                                if UIImage(named: hold.imageURL) != nil {
+                                    Image(hold.imageURL)
+                                        .resizable()
+                                        .frame(width: 70, height: 70)
+                                        .clipShape(Circle())
+                                } else {
+                                    // Utilisation d'une icône SF Symbol par défaut
+                                    Image(systemName: "photo.fill")
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .clipShape(Circle())
+                                        .foregroundColor(.gray)
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(hold.holdName)
+                                        .font(.headline)
+                                    Text("Type : \(hold.holdTypeName)")
+                                        .font(.subheadline)
+                                    Text("Niveau : \(hold.clientLevelName)")
+                                        .font(.subheadline)
+                                    Text("Prix : \((hold.priceAsDouble ?? 0.0), specifier: "%.2f") €")
+                                        .font(.subheadline)
+                                }
+                                .padding(.leading)
                             }
-                        }
-                        VStack(alignment: .leading) {
-                            // Affichage des propriétés du modèle Hold
-                            Text(hold.name) // Affiche le nom de la prise
-                                .font(.headline)
-                            Text("Type : \(hold.holdTypeName)") // Type de la prise
-                                .font(.subheadline)
-                            Text("Couleur : \(hold.holdColorName)") // Couleur de la prise
-                                .font(.subheadline)
-                            Text("Niveau : \(hold.clientLevelName)") // Niveau d'utilisateur pour la prise
-                                .font(.subheadline)
                         }
                     }
                 }
             }
-            .navigationTitle("Catalogue des Prises") // Titre du catalogue
+            .navigationTitle("Catalogue des Prises")
         }
     }
 }
+
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {

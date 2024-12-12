@@ -20,7 +20,7 @@ struct CartView: View {
                 } else {
                     List(cartViewModel.items) { item in
                         HStack {
-                            Text(item.hold.name)
+                            Text(item.hold.holdName)
                             Spacer()
                             Text("x\(item.quantity)")
                             Spacer()

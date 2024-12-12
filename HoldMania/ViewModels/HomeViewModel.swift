@@ -8,8 +8,44 @@
 import Foundation
 
 class HomeViewModel: ObservableObject {
-    @Published var holds: [Hold] = [
-        Hold(id: 1, name: "La prise du dragon", holdTypeName: "Jug", holdColorName: "Rouge", clientLevelName: "Débutant", sizeMeters: 0.4, weight: 14.2, price: 120.14, imageURL: URL(string: "https://example.com/jug1.png")!),
-        Hold(id: 2, name: "Le slopper glissant af", holdTypeName: "Slopper", holdColorName: "Jaune", clientLevelName: "Expert", sizeMeters: 1.2, weight: 38.00, price: 301.99, imageURL: URL(string: "https://example.com/jug1.png")!)
-    ]
+    @Published var holds: [Hold] = [] // Liste vide au départ
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String? = nil
+
+    init() {
+        fetchHolds() // Charger les données à l'initialisation
+    }
+
+    private func fetchHolds() {
+        guard let url = URL(string: "\(API.baseURL)/holds") else {
+            errorMessage = "URL invalide"
+            return
+        }
+        
+        isLoading = true // Démarrer le chargement
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            DispatchQueue.main.async {
+                self?.isLoading = false // Arrêter le chargement
+                
+                if let error = error {
+                    self?.errorMessage = "Erreur réseau : \(error.localizedDescription)"
+                    return
+                }
+                
+                guard let data = data else {
+                    self?.errorMessage = "Aucune donnée reçue."
+                    return
+                }
+                
+                // Décoder les données reçues
+                do {
+                    let decodedHolds = try JSONDecoder().decode([Hold].self, from: data)
+                    self?.holds = decodedHolds
+                    self?.errorMessage = nil
+                } catch {
+                    self?.errorMessage = "Erreur lors de la lecture des données."
+                }
+            }
+        }.resume()
+    }
 }
