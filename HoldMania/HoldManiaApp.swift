@@ -25,6 +25,7 @@ struct HoldManiaApp: App {
             ContentView()
                 .environmentObject(userViewModel)
                 .environmentObject(cartViewModel)
+                .environmentObject(orderViewModel)
 
         }
     }

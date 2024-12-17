@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var userViewModel : UserViewModel
+    @EnvironmentObject var orderViewModel : OrderViewModel
+    @EnvironmentObject var cartViewModel : CartViewModel
     
     var body: some View {
             TabView {
@@ -22,15 +24,15 @@ struct ContentView: View {
                     .tabItem {
                         Label("Panier", systemImage: "cart")
                     }
-                    .disabled(userViewModel.user != nil)
-                    .opacity(userViewModel.user != nil ? 0.5 : 1)
+                    .disabled(!userViewModel.isLoggedIn())
+                    .opacity(userViewModel.isLoggedIn() ? 1 : 0.5)
                 
                 OrderView()
                     .tabItem {
-                        Label("Commandes", systemImage: "cart")
+                        Label("Commandes", systemImage: "truck.box.fill")
                     }
-                    .disabled(userViewModel.user != nil)
-                    .opacity(userViewModel.user != nil ? 0.5 : 1)
+                    .disabled(!userViewModel.isLoggedIn())
+                    .opacity(userViewModel.isLoggedIn() ? 1 : 0.5)
                 
                 AccountView()
                     .tabItem {
@@ -54,4 +56,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(CartViewModel())
+        .environmentObject(UserViewModel())
+        .environmentObject(OrderViewModel())
 }

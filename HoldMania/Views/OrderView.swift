@@ -14,15 +14,35 @@ struct OrderView: View {
     @EnvironmentObject var orderViewModel : OrderViewModel
     
     var body: some View {
-        List(orderViewModel.orders){ order in
-            Text("order")
-            Text("\(order.totalNumberOfHolds), sent : \(order.isSent)")
+        
+        VStack{
+            List(orderViewModel.orders){ order in
+                HStack{
+                    Text("order")
+                    Text("\(order.totalNumberOfHolds), sent : \(order.isSent)")
+                }
+            }
+            
+            if(orderViewModel.isLoading)
+            {
+                Text("loading ...")
+            }
+            
+            if(orderViewModel.errorMessage != nil)
+            {
+                Text("Error : \(orderViewModel.errorMessage ?? "invalid error message")")
+            }
+            
+            Text("number of orders : \(orderViewModel.orders)")
         }
     }
 }
 
 struct OrderView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountView()
+        OrderView()
+            .environmentObject(UserViewModel())
+            .environmentObject(OrderViewModel())
+            .environmentObject(CartViewModel())
     }
 }

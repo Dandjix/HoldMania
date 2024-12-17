@@ -38,7 +38,7 @@ class OrderViewModel: ObservableObject {
         let urlString = "\(API.baseURL)/orders/\(userId)"
         
 
-        guard var components = URLComponents(string: urlString) else {
+        guard let components = URLComponents(string: urlString) else {
             errorMessage = NetworkError.invalidURL.localizedDescription
             completion(false, NetworkError.invalidURL)
             isLoading = false
