@@ -56,6 +56,11 @@ class UserViewModel: ObservableObject {
         task.resume()
     }
     
+    func logout() {
+        self.user = nil
+        self.errorMessage = nil
+    }
+    
     func isLoggedIn() -> Bool
     {
         return user != nil
