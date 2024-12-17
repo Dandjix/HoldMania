@@ -55,4 +55,9 @@ class UserViewModel: ObservableObject {
         }
         task.resume()
     }
+    
+    func isLoggedIn() -> Bool
+    {
+        return user != nil
+    }
 }

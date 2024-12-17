@@ -43,7 +43,6 @@ struct ContentView: View {
         
         static var previews: some View {
             ContentView()
-                .environmentObject(UserSession())
                 .environmentObject(CartViewModel())
                 .environmentObject(UserViewModel())
                 .environmentObject(OrderViewModel())

@@ -23,7 +23,7 @@ struct HoldManiaApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(userSession)
+                .environmentObject(userViewModel)
                 .environmentObject(cartViewModel)
 
         }

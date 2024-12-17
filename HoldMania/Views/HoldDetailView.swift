@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HoldDetailView: View {
     @EnvironmentObject var cartViewModel: CartViewModel
-    @EnvironmentObject var userSession: UserSession
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var hold: Hold
 
@@ -38,7 +38,7 @@ struct HoldDetailView: View {
             Spacer()
 
             // Affiche le bouton selon l'état de connexion
-            if userSession.isLoggedIn {
+            if userViewModel.isLoggedIn() {
                 Button(action: {
                     cartViewModel.addItem(hold: hold)
                 }) {
