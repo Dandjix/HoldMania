@@ -8,35 +8,36 @@
 import SwiftUI
 
 struct AccountView: View {
-    @State private var name: String = ""
-    @State private var firstname: String = ""
-    @State private var email: String = ""
-    @State private var phone: String = ""
     @State private var isLoading: Bool = false
     @State private var errorMessage: String? = nil
-    @State private var isDataLoaded: Bool = false
+    @EnvironmentObject var userSession: UserSession
 
     var body: some View {
             NavigationView {
                 Form {
-                    if isDataLoaded {
-                        
+                    if userSession.isLoggedIn {
                         Section(header: Text("Informations personnelles")) {
-                            TextField("Nom", text: $name)
-                                .disabled(true)
-                            TextField("Prénom", text: $firstname)
-                                .disabled(true)
-                            TextField("Téléphone", text: $phone)
-                                .disabled(true)
+                            Text("Nom : \(userSession.name)")
+                            Text("Prénom : \(userSession.firstname)")
+                            Text("Téléphone : \(userSession.phone)")
+                        }
+                        
+                        Section {
+                            Button(action: disconnect) {
+                                Text("Se déconnecter")
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.red)
+                                    .cornerRadius(8)
+                            }
                         }
                     } else {
                         Text("Veuillez vous connecter pour afficher vos informations.")
                             .font(.footnote)
                             .foregroundColor(.gray)
-                    }
                     
-                    Section(header: Text("Entrez un email")) {
-                        TextField("Email", text: $email)
+                        TextField("Email", text: $userSession.email)
                             .keyboardType(.emailAddress)
                         
                         Button(action: connect) {
@@ -46,12 +47,12 @@ struct AccountView: View {
                             } else {
                                 Text("Se connecter")
                                     .frame(maxWidth: .infinity, alignment: .center)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .cornerRadius(8)
                             }
                         }
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(8)
                     }
                     
                     if let errorMessage = errorMessage {
@@ -67,7 +68,7 @@ struct AccountView: View {
         }
 
         private func connect() {
-            guard !email.isEmpty else {
+            guard !userSession.email.isEmpty else {
                 errorMessage = "Veuillez entrer une adresse email valide."
                 return
             }
@@ -75,7 +76,7 @@ struct AccountView: View {
             isLoading = true
 
             // Construire l'URL
-            let urlString = "\(API.baseURL)/users/connectByEmail?email=\(email)"
+            let urlString = "\(API.baseURL)/users/connectByEmail?email=\(userSession.email)"
             guard let url = URL(string: urlString) else {
                 errorMessage = "URL invalide."
                 isLoading = false
@@ -100,7 +101,8 @@ struct AccountView: View {
                     // Décoder la réponse JSON
                     do {
                         let user = try JSONDecoder().decode(User.self, from: data)
-                        updateUI(with: user)
+                        updateGlobalSession(with: user)
+
                     } catch {
                         errorMessage = "Mauvaise adresse email."
                     }
@@ -108,19 +110,31 @@ struct AccountView: View {
             }
             task.resume()
         }
-
-        private func updateUI(with user: User) {
-            name = user.lastName
-            firstname = user.firstName
-            email = user.email
-            phone = user.phoneNumber
-            errorMessage = nil
-            isDataLoaded = true
+    
+        private func disconnect() {
+            // Réinitialiser les données utilisateur et l'état de connexion
+            userSession.isLoggedIn = false
+            userSession.name = ""
+            userSession.firstname = ""
+            userSession.email = ""
+            userSession.phone = ""
         }
+    
+        private func updateGlobalSession(with user: User) {
+            // Mettre à jour les informations utilisateur globales
+            userSession.name = user.lastName
+            userSession.firstname = user.firstName
+            userSession.email = user.email
+            userSession.phone = user.phoneNumber
+            userSession.isLoggedIn = true
+        }
+
+        
     }
 
     struct AccountView_Previews: PreviewProvider {
         static var previews: some View {
             AccountView()
+                .environmentObject(UserSession())
         }
     }

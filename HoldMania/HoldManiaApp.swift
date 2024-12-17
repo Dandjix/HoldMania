@@ -16,12 +16,14 @@ import SwiftUI
 
 @main
 struct HoldManiaApp: App {
+    @StateObject private var userSession = UserSession()
     @StateObject private var cartViewModel = CartViewModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(cartViewModel) 
+                .environmentObject(userSession)
+                .environmentObject(cartViewModel)
 
         }
     }
