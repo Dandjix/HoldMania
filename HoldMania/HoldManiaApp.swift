@@ -16,8 +16,9 @@ import SwiftUI
 
 @main
 struct HoldManiaApp: App {
-    @StateObject private var userSession = UserSession()
     @StateObject private var cartViewModel = CartViewModel()
+    @StateObject private var userViewModel = UserViewModel()
+    @StateObject private var orderViewModel = OrderViewModel()
 
     var body: some Scene {
         WindowGroup {

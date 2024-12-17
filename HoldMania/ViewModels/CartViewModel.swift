@@ -14,6 +14,11 @@ class CartViewModel: ObservableObject {
         items.reduce(0) { $0 + $1.totalPrice }
     }
     
+    func getCart()
+    {
+        
+    }
+    
     func addItem(hold: Hold) {
         if let index = items.firstIndex(where: { $0.hold.id == hold.id }) {
             items[index].quantity += 1

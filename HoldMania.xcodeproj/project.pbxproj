@@ -17,7 +17,10 @@
 		C4B67BBA2D008C9B00567529 /* HoldDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB92D008C9B00567529 /* HoldDetailView.swift */; };
 		C4B67BBE2D008D0200567529 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BBD2D008D0200567529 /* CartView.swift */; };
 		C4B67BC02D008D1700567529 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BBF2D008D1700567529 /* AccountView.swift */; };
-		C4FAB32F2D11AAA4003F7AE4 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FAB32E2D11AAA4003F7AE4 /* UserSession.swift */; };
+		FF267EBF2D11A910003F764F /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EBE2D11A910003F764F /* UserViewModel.swift */; };
+		FF267EC12D11B076003F764F /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EC02D11B076003F764F /* OrderViewModel.swift */; };
+		FF267EC32D11B128003F764F /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EC22D11B128003F764F /* Order.swift */; };
+		FF267EC52D11B6B7003F764F /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EC42D11B6B7003F764F /* OrderView.swift */; };
 		FF58A5982CFF590C00B36DDE /* HoldManiaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF58A5972CFF590C00B36DDE /* HoldManiaApp.swift */; };
 		FF58A59A2CFF590C00B36DDE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF58A5992CFF590C00B36DDE /* ContentView.swift */; };
 		FF58A59C2CFF590D00B36DDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF58A59B2CFF590D00B36DDE /* Assets.xcassets */; };
@@ -35,7 +38,10 @@
 		C4B67BB92D008C9B00567529 /* HoldDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldDetailView.swift; sourceTree = "<group>"; };
 		C4B67BBD2D008D0200567529 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		C4B67BBF2D008D1700567529 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		C4FAB32E2D11AAA4003F7AE4 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		FF267EBE2D11A910003F764F /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		FF267EC02D11B076003F764F /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
+		FF267EC22D11B128003F764F /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		FF267EC42D11B6B7003F764F /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		FF58A5942CFF590C00B36DDE /* HoldMania.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoldMania.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF58A5972CFF590C00B36DDE /* HoldManiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldManiaApp.swift; sourceTree = "<group>"; };
 		FF58A5992CFF590C00B36DDE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,7 +66,7 @@
 				C4B67BAD2D008BFF00567529 /* User.swift */,
 				C4B67BAF2D008C1000567529 /* Hold.swift */,
 				C4B67BB12D008C2300567529 /* CartItem.swift */,
-				C4FAB32E2D11AAA4003F7AE4 /* UserSession.swift */,
+				FF267EC22D11B128003F764F /* Order.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -72,6 +78,7 @@
 				C4B67BB92D008C9B00567529 /* HoldDetailView.swift */,
 				C4B67BBD2D008D0200567529 /* CartView.swift */,
 				C4B67BBF2D008D1700567529 /* AccountView.swift */,
+				FF267EC42D11B6B7003F764F /* OrderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -81,6 +88,8 @@
 			children = (
 				C4B67BB32D008C4D00567529 /* HomeViewModel.swift */,
 				C4B67BB52D008C6C00567529 /* CartViewModel.swift */,
+				FF267EBE2D11A910003F764F /* UserViewModel.swift */,
+				FF267EC02D11B076003F764F /* OrderViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -195,15 +204,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4B67BBE2D008D0200567529 /* CartView.swift in Sources */,
+				FF267EC52D11B6B7003F764F /* OrderView.swift in Sources */,
 				C4B67BB02D008C1000567529 /* Hold.swift in Sources */,
 				C4B67BB42D008C4D00567529 /* HomeViewModel.swift in Sources */,
 				C4B67BB62D008C6C00567529 /* CartViewModel.swift in Sources */,
 				C4B67BC02D008D1700567529 /* AccountView.swift in Sources */,
+				FF267EC12D11B076003F764F /* OrderViewModel.swift in Sources */,
 				C43CE6C02D089785001F5C21 /* Constantes.swift in Sources */,
 				C4B67BBA2D008C9B00567529 /* HoldDetailView.swift in Sources */,
 				FF58A59A2CFF590C00B36DDE /* ContentView.swift in Sources */,
 				FF58A5982CFF590C00B36DDE /* HoldManiaApp.swift in Sources */,
+				FF267EBF2D11A910003F764F /* UserViewModel.swift in Sources */,
 				C4B67BB82D008C8400567529 /* HomeView.swift in Sources */,
+				FF267EC32D11B128003F764F /* Order.swift in Sources */,
 				C4B67BB22D008C2300567529 /* CartItem.swift in Sources */,
 				C4FAB32F2D11AAA4003F7AE4 /* UserSession.swift in Sources */,
 				C4B67BAE2D008BFF00567529 /* User.swift in Sources */,
