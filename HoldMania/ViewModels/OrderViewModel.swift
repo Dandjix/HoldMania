@@ -34,7 +34,6 @@ class OrderViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     func load(userId: Int, completion: @escaping (Bool, Error?) -> Void = { _,_ in }) {
-        isLoading = true
         guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
             errorMessage = "URL invalide"
             return
