@@ -17,9 +17,10 @@ struct OrderView: View {
         
         VStack{
             List(orderViewModel.orders){ order in
-                HStack{
-                    Text("order")
-                    Text("\(order.totalNumberOfHolds), sent : \(order.isSent)")
+                VStack{
+                    Text("Number of holds in order : \(order.totalNumberOfHoldsAsInt)")
+                    Text("Total price : \(order.totalOrderPriceAsDouble,specifier: "%.2f")")
+                    Text("Date d'achat : \(order.formattedDateOrder)")
                 }
             }
             
@@ -32,8 +33,6 @@ struct OrderView: View {
             {
                 Text("Error : \(orderViewModel.errorMessage ?? "invalid error message")")
             }
-            
-            Text("number of orders : \(orderViewModel.orders)")
         }
     }
 }

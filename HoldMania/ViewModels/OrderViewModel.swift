@@ -35,41 +35,38 @@ class OrderViewModel: ObservableObject {
     
     func load(userId: Int, completion: @escaping (Bool, Error?) -> Void = { _,_ in }) {
         isLoading = true
-        let urlString = "\(API.baseURL)/orders/\(userId)"
+        guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
+            errorMessage = "URL invalide"
+            return
+        }
         
-
-        guard let components = URLComponents(string: urlString) else {
-            errorMessage = NetworkError.invalidURL.localizedDescription
-            completion(false, NetworkError.invalidURL)
-            isLoading = false
-            return
-        }
-
-
-        guard let url = components.url else {
-            errorMessage = NetworkError.invalidURL.localizedDescription
-            completion(false, NetworkError.invalidURL)
-            isLoading = false
-            return
-        }
-
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map { $0.data }
-            .decode(type: [Order].self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completionStatus in
-                self.isLoading = false
-                switch completionStatus {
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                    completion(false, error)
-                case .finished:
-                    break
+        isLoading = true // Démarrer le chargement
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            DispatchQueue.main.async {
+                self?.isLoading = false // Arrêter le chargement
+                
+                if let error = error {
+                    self?.errorMessage = "Erreur réseau : \(error.localizedDescription)"
+                    return
                 }
-            }, receiveValue: { orders in
-                self.orders = orders
-                completion(true, nil)
-            })
-            .store(in: &cancellables)
+                
+                guard let data = data else {
+                    self?.errorMessage = "Aucune donnée reçue."
+                    return
+                }
+                
+
+                do {
+                    var decodedOrders = try JSONDecoder().decode([Order].self, from: data)
+                    
+                    decodedOrders = decodedOrders.filter{$0.isSentAsBool}
+                    
+                    self?.orders = decodedOrders
+                    self?.errorMessage = nil
+                } catch {
+                    self?.errorMessage = "Erreur lors de la lecture des données."
+                }
+            }
+        }.resume()
     }
 }
