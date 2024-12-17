@@ -14,6 +14,7 @@ struct AccountView: View {
     
     @EnvironmentObject var userViewModel : UserViewModel
     @EnvironmentObject var orderViewModel : OrderViewModel
+    @EnvironmentObject var cartViewModel : CartViewModel
     
     @Environment(\.presentationMode) var presentationMode
 
@@ -85,6 +86,7 @@ struct AccountView: View {
                     isLoading = false
                     if success {
                         orderViewModel.load(userId: userViewModel.user!.idClient)
+                        cartViewModel.load(userId: userViewModel.user!.idClient)
                         // Les informations de l'utilisateur sont automatiquement mises à jour dans le ViewModel
                         self.presentationMode.wrappedValue.dismiss()
 
