@@ -3,6 +3,7 @@ import SwiftUI
 struct HoldDetailView: View {
     @EnvironmentObject var cartViewModel: CartViewModel
     @EnvironmentObject var userViewModel: UserViewModel
+    @Environment(\.presentationMode) var presentationMode
     
     var hold: Hold
 
@@ -78,7 +79,6 @@ struct HoldDetailView: View {
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
-                .disabled(!isModified)
             } else {
                 NavigationLink(destination: AccountView()) {
                     Text("Se connecter")
@@ -93,6 +93,7 @@ struct HoldDetailView: View {
         .padding()
 //        .onAppear {
 //            self.quantityInCart = cartViewModel.getQuantityInCart(for: hold)
+//            self.isModified = false
 //        }
     }
     private func incrementQuantity() {
@@ -110,6 +111,7 @@ struct HoldDetailView: View {
     private func updateCart() {
         cartViewModel.updateCartQuantity(holdId: hold.id, quantity: quantityInCart)
         isModified = false
+        presentationMode.wrappedValue.dismiss()
     }
 }
 
