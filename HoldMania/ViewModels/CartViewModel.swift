@@ -164,7 +164,14 @@ class CartViewModel: ObservableObject {
         }.resume()
     }
     
-    
+    func getQuantityInCart(holdId: Int) -> Int {
+        if let orderItem = items.first(where: { $0.idHold == holdId }) {
+            return orderItem.quantity
+        } else {
+            return 0
+        }
+    }
+
     func updateCartQuantity(holdId : Int, quantity: Int) {
         let cartId = self.cartId
         

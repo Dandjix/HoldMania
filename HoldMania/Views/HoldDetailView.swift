@@ -8,6 +8,7 @@ struct HoldDetailView: View {
     var hold: Hold
 
     @State private var quantityInCart: Int = 0
+    @State private var initialQuantity: Int = 0
     @State private var isModified: Bool = false
 
     var body: some View {
@@ -91,27 +92,32 @@ struct HoldDetailView: View {
         }
         .navigationTitle("Détails de la Prise")
         .padding()
-//        .onAppear {
-//            self.quantityInCart = cartViewModel.getQuantityInCart(for: hold)
-//            self.isModified = false
-//        }
+        .onAppear {
+            self.initialQuantity = cartViewModel.getQuantityInCart(holdId: hold.id)
+            self.quantityInCart = self.initialQuantity
+            self.isModified = false
+        }
     }
     private func incrementQuantity() {
         quantityInCart += 1
-        isModified = true
+        checkIfModified()
     }
 
     private func decrementQuantity() {
         if quantityInCart > 0 {
             quantityInCart -= 1
         }
-        isModified = true
+        checkIfModified()
     }
 
     private func updateCart() {
         cartViewModel.updateCartQuantity(holdId: hold.id, quantity: quantityInCart)
         isModified = false
         presentationMode.wrappedValue.dismiss()
+    }
+    
+    private func checkIfModified() {
+        isModified = (quantityInCart != initialQuantity)
     }
 }
 
