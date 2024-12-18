@@ -108,7 +108,7 @@ struct HoldDetailView: View {
     }
 
     private func updateCart() {
-//            cartViewModel.updateCartQuantity(for: hold, quantity: quantityInCart)
+        cartViewModel.updateCartQuantity(holdId: hold.id, quantity: quantityInCart)
         isModified = false
     }
 }
