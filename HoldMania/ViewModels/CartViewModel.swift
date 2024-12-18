@@ -165,8 +165,7 @@ class CartViewModel: ObservableObject {
     }
     
     
-    func updateCartQuantity(hold: Hold, quantity: Int) {
-        let holdId = hold.id
+    func updateCartQuantity(holdId : Int, quantity: Int) {
         let cartId = self.cartId
         
         guard cartId != -1 else {
