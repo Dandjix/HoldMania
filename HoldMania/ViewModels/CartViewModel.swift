@@ -201,7 +201,7 @@ class CartViewModel: ObservableObject {
             
         } else if items.contains(where: { $0.id == holdId }) {
             // PATCH /orders/lines?idOrder=cartId
-            guard let url = URL(string: "\(API.baseURL)/orders/lines?idOrder=\(cartId)") else {
+            guard let url = URL(string: "\(API.baseURL)/orders/lines?idOrder=\(cartId)&idHold=\(holdId)&quantity=\(quantity)") else {
                 self.errorMessage = "URL invalide."
                 return
             }
@@ -210,23 +210,14 @@ class CartViewModel: ObservableObject {
             request.httpMethod = "PATCH"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
-            let updatePayload: [String: Any] = ["idHold": holdId, "quantity": quantity]
-            do {
-                let jsonData = try JSONSerialization.data(withJSONObject: updatePayload, options: [])
-                request.httpBody = jsonData
-                
-                URLSession.shared.dataTask(with: request) { data, response, error in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
-                        }
-                        self.refreshCart() // Refresh cart regardless of outcome
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
                     }
-                }.resume()
-                
-            } catch {
-                self.errorMessage = "Erreur lors de la création du corps JSON."
-            }
+                    self.refreshCart() // Refresh cart regardless of outcome
+                }
+            }.resume()
             
         } else {
             // POST /orders/lines?idOrder=cartId&idHold=holdId&quantity=quantity
