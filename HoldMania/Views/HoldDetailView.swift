@@ -40,7 +40,7 @@ struct HoldDetailView: View {
             // Affiche le bouton selon l'état de connexion
             if userViewModel.isLoggedIn() {
                 Button(action: {
-                    cartViewModel.addItem(hold: hold)
+                    cartViewModel.updateCartQuantity(hold: hold, quantity: 1)
                 }) {
                     Text("Ajouter au panier")
                         .padding()

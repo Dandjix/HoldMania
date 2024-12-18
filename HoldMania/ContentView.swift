@@ -20,19 +20,17 @@ struct ContentView: View {
                         Label("Home", systemImage: "house")
                     }
                 
-                CartView()
-                    .tabItem {
-                        Label("Panier", systemImage: "cart")
-                    }
-                    .disabled(!userViewModel.isLoggedIn())
-                    .opacity(userViewModel.isLoggedIn() ? 1 : 0.5)
-                
-                OrderView()
-                    .tabItem {
-                        Label("Commandes", systemImage: "truck.box.fill")
-                    }
-                    .disabled(!userViewModel.isLoggedIn())
-                    .opacity(userViewModel.isLoggedIn() ? 1 : 0.5)
+                if userViewModel.isLoggedIn() {
+                    CartView()
+                        .tabItem {
+                            Label("Panier", systemImage: "cart")
+                        }
+                    
+                    OrderView()
+                        .tabItem {
+                            Label("Commandes", systemImage: "truck.box.fill")
+                        }
+                }
                 
                 AccountView()
                     .tabItem {

@@ -56,6 +56,9 @@ class OrderViewModel: ObservableObject {
                 
 
                 do {
+                    
+//                    let fake = "{\"idOrder\":1,\"dateOrder\":\"2024-11-30T23:00:00.000Z\",\"isSent\":1,\"totalOrderPrice\":\"384.00\",\"totalNumberOfHolds\":\"32\"}"
+                    
                     var decodedOrders = try JSONDecoder().decode([Order].self, from: data)
                     
                     decodedOrders = decodedOrders.filter{$0.isSentAsBool}

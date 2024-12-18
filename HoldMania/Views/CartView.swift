@@ -13,18 +13,25 @@ struct CartView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if cartViewModel.items.isEmpty {
+                if cartViewModel.isLoading{
+                    Text("Chargement...")
+                }
+                else if cartViewModel.errorMessage != nil
+                {
+                    Text("Cart error : \(cartViewModel.errorMessage ?? "Empty error")")
+                }
+                else if cartViewModel.items.isEmpty {
                     Text("Votre panier est vide.")
                         .font(.headline)
                         .padding()
                 } else {
                     List(cartViewModel.items) { item in
                         HStack {
-                            Text(item.hold.holdName)
+                            Text(item.holdName)
                             Spacer()
                             Text("x\(item.quantity)")
                             Spacer()
-                            Text("\(item.totalPrice, specifier: "%.2f") €")
+                            Text("\(item.totalPriceAsDouble, specifier: "%.2f") €")
                         }
                     }
                     

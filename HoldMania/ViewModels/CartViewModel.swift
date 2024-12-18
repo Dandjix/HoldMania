@@ -16,12 +16,13 @@ enum CartError : Error
 
 
 class CartViewModel: ObservableObject {
-    @Published var items: [CartItem] = []
+    @Published var items: [OrderItem] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage : String? = nil
+    @Published var cartId : Int = -1
         
     var totalPrice: Double {
-        items.reduce(0) { $0 + $1.totalPrice }
+        items.reduce(0) { $0 + $1.totalPriceAsDouble }
     }
     
     func load(userId: Int, completion: @escaping (Bool, Error?) -> Void = { _,_ in }) {
@@ -53,6 +54,7 @@ class CartViewModel: ObservableObject {
                     {
                         self?.createOrder(userId: userId, completion: { orderId, error in
                             if error == nil{
+                                self?.cartId = orderId
                                 self?.loadCartItems(cartId: orderId, completion: completion)
                             } else {
                                 self?.errorMessage = "Failed to create order"
@@ -63,6 +65,7 @@ class CartViewModel: ObservableObject {
                     else if(decodedOrders.count == 1)
                     {
                         let cartId = decodedOrders[0].idOrder
+                        self?.cartId = cartId
                         self?.loadCartItems(cartId: cartId, completion: completion)
                     }
                     else
@@ -149,7 +152,7 @@ class CartViewModel: ObservableObject {
                 
                 do {
                     // Decode the cart items (assuming an appropriate struct for items)
-                    let items = try JSONDecoder().decode([CartItem].self, from: data)
+                    let items = try JSONDecoder().decode([OrderItem].self, from: data)
                     self.items = items  // Store the cart items
                     self.errorMessage = nil
                     completion(true, nil)  // Success
@@ -162,18 +165,95 @@ class CartViewModel: ObservableObject {
     }
     
     
-    func addItem(hold: Hold) {
-        if let index = items.firstIndex(where: { $0.hold.id == hold.id }) {
-            items[index].quantity += 1
+    func updateCartQuantity(hold: Hold, quantity: Int) {
+        let holdId = hold.id
+        let cartId = self.cartId
+        
+        guard cartId != -1 else {
+            self.errorMessage = "Cart ID invalide."
+            return
+        }
+        
+        if quantity == 0 {
+            // DELETE /orders/lines?idOrder=cartId&idHold=holdId
+            guard let url = URL(string: "\(API.baseURL)/orders/lines?idOrder=\(cartId)&idHold=\(holdId)") else {
+                self.errorMessage = "URL invalide."
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
+                    }
+                    self.refreshCart() // Refresh cart regardless of outcome
+                }
+            }.resume()
+            
+        } else if items.contains(where: { $0.id == holdId }) {
+            // PATCH /orders/lines?idOrder=cartId
+            guard let url = URL(string: "\(API.baseURL)/orders/lines?idOrder=\(cartId)") else {
+                self.errorMessage = "URL invalide."
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let updatePayload: [String: Any] = ["idHold": holdId, "quantity": quantity]
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: updatePayload, options: [])
+                request.httpBody = jsonData
+                
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    DispatchQueue.main.async {
+                        if let error = error {
+                            self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
+                        }
+                        self.refreshCart() // Refresh cart regardless of outcome
+                    }
+                }.resume()
+                
+            } catch {
+                self.errorMessage = "Erreur lors de la création du corps JSON."
+            }
+            
         } else {
-            let newItem = CartItem(id: items.count + 1, hold: hold, quantity: 1)
-            items.append(newItem)
+            // POST /orders/lines?idOrder=cartId&idHold=holdId&quantity=quantity
+            guard let url = URL(string: "\(API.baseURL)/orders/lines?idOrder=\(cartId)&idHold=\(holdId)&quantity=\(quantity)") else {
+                self.errorMessage = "URL invalide."
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
+                    }
+                    self.refreshCart() // Refresh cart regardless of outcome
+                }
+            }.resume()
         }
     }
-    
-    func removeItem(id: Int) {
-        if let index = items.firstIndex(where: { $0.id == id }) {
-            items.remove(at: index)
+
+    // Helper function to refresh the cart
+    private func refreshCart() {
+        loadCartItems(cartId: self.cartId) { success, error in
+            if let error = error {
+                self.errorMessage = "Erreur lors de la mise à jour du panier : \(error.localizedDescription)"
+            } else if !success {
+                self.errorMessage = "La mise à jour du panier a échoué."
+            } else {
+                self.errorMessage = nil // Clear error if successful
+            }
         }
     }
 }

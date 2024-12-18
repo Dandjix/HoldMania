@@ -10,13 +10,14 @@
 		C43CE6C02D089785001F5C21 /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43CE6BF2D089785001F5C21 /* Constantes.swift */; };
 		C4B67BAE2D008BFF00567529 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAD2D008BFF00567529 /* User.swift */; };
 		C4B67BB02D008C1000567529 /* Hold.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAF2D008C1000567529 /* Hold.swift */; };
-		C4B67BB22D008C2300567529 /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB12D008C2300567529 /* CartItem.swift */; };
+		C4B67BB22D008C2300567529 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB12D008C2300567529 /* OrderItem.swift */; };
 		C4B67BB42D008C4D00567529 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB32D008C4D00567529 /* HomeViewModel.swift */; };
 		C4B67BB62D008C6C00567529 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB52D008C6C00567529 /* CartViewModel.swift */; };
 		C4B67BB82D008C8400567529 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB72D008C8400567529 /* HomeView.swift */; };
 		C4B67BBA2D008C9B00567529 /* HoldDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB92D008C9B00567529 /* HoldDetailView.swift */; };
 		C4B67BBE2D008D0200567529 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BBD2D008D0200567529 /* CartView.swift */; };
 		C4B67BC02D008D1700567529 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BBF2D008D1700567529 /* AccountView.swift */; };
+		FF0C180D2D12F93A0084CF7F /* OrderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0C180C2D12F93A0084CF7F /* OrderService.swift */; };
 		FF267EBF2D11A910003F764F /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EBE2D11A910003F764F /* UserViewModel.swift */; };
 		FF267EC12D11B076003F764F /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EC02D11B076003F764F /* OrderViewModel.swift */; };
 		FF267EC32D11B128003F764F /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF267EC22D11B128003F764F /* Order.swift */; };
@@ -31,13 +32,14 @@
 		C43CE6BF2D089785001F5C21 /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
 		C4B67BAD2D008BFF00567529 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C4B67BAF2D008C1000567529 /* Hold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hold.swift; sourceTree = "<group>"; };
-		C4B67BB12D008C2300567529 /* CartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItem.swift; sourceTree = "<group>"; };
+		C4B67BB12D008C2300567529 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
 		C4B67BB32D008C4D00567529 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		C4B67BB52D008C6C00567529 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		C4B67BB72D008C8400567529 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C4B67BB92D008C9B00567529 /* HoldDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldDetailView.swift; sourceTree = "<group>"; };
 		C4B67BBD2D008D0200567529 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		C4B67BBF2D008D1700567529 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		FF0C180C2D12F93A0084CF7F /* OrderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderService.swift; sourceTree = "<group>"; };
 		FF267EBE2D11A910003F764F /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		FF267EC02D11B076003F764F /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
 		FF267EC22D11B128003F764F /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
@@ -65,7 +67,7 @@
 			children = (
 				C4B67BAD2D008BFF00567529 /* User.swift */,
 				C4B67BAF2D008C1000567529 /* Hold.swift */,
-				C4B67BB12D008C2300567529 /* CartItem.swift */,
+				C4B67BB12D008C2300567529 /* OrderItem.swift */,
 				FF267EC22D11B128003F764F /* Order.swift */,
 			);
 			path = Models;
@@ -94,6 +96,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		FF0C180E2D12F9470084CF7F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FF0C180C2D12F93A0084CF7F /* OrderService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		FF58A58B2CFF590C00B36DDE = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +123,7 @@
 		FF58A5962CFF590C00B36DDE /* HoldMania */ = {
 			isa = PBXGroup;
 			children = (
+				FF0C180E2D12F9470084CF7F /* Services */,
 				C4B67BAC2D008BCF00567529 /* ViewModels */,
 				C4B67BAB2D008BBB00567529 /* Views */,
 				C4B67BAA2D008BB600567529 /* Models */,
@@ -207,6 +218,7 @@
 				FF267EC52D11B6B7003F764F /* OrderView.swift in Sources */,
 				C4B67BB02D008C1000567529 /* Hold.swift in Sources */,
 				C4B67BB42D008C4D00567529 /* HomeViewModel.swift in Sources */,
+				FF0C180D2D12F93A0084CF7F /* OrderService.swift in Sources */,
 				C4B67BB62D008C6C00567529 /* CartViewModel.swift in Sources */,
 				C4B67BC02D008D1700567529 /* AccountView.swift in Sources */,
 				FF267EC12D11B076003F764F /* OrderViewModel.swift in Sources */,
@@ -217,8 +229,7 @@
 				FF267EBF2D11A910003F764F /* UserViewModel.swift in Sources */,
 				C4B67BB82D008C8400567529 /* HomeView.swift in Sources */,
 				FF267EC32D11B128003F764F /* Order.swift in Sources */,
-				C4B67BB22D008C2300567529 /* CartItem.swift in Sources */,
-				C4FAB32F2D11AAA4003F7AE4 /* UserSession.swift in Sources */,
+				C4B67BB22D008C2300567529 /* OrderItem.swift in Sources */,
 				C4B67BAE2D008BFF00567529 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
