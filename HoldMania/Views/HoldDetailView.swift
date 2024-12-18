@@ -47,26 +47,28 @@ struct HoldDetailView: View {
                     Text("v")
                         .font(.largeTitle)
                         .frame(width: 40, height: 40)
-                        .background(Color.pink.opacity(0.85))
+                        .background(userViewModel.isLoggedIn() ? Color.pink.opacity(0.85) : Color.pink.opacity(0.5))
                         .foregroundColor(.white)
                         .clipShape(Circle())
                         .baselineOffset(2*Double.pi)
                 }
+                .disabled(!userViewModel.isLoggedIn())
                 
                 Text("\(quantityInCart)") // Affiche la quantité actuelle
-                    .font(.title)
+                    .font(.title).opacity(userViewModel.isLoggedIn() ? 1 : 0.5)
                     .padding()
 
                 Button(action: incrementQuantity) {
                     Text("ʌ")
                         .font(.largeTitle)
                         .frame(width: 40, height: 40)
-                        .background(Color.green.opacity(0.85))
+                        .background(userViewModel.isLoggedIn() ? Color.green.opacity(0.85) : Color.green.opacity(0.5))
                         .foregroundColor(.white)
                         .clipShape(Circle())
                         .baselineOffset(2*Double.pi)
 
                 }
+                .disabled(!userViewModel.isLoggedIn())
             }
 
             Spacer()
