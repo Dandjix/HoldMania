@@ -4,6 +4,7 @@ struct HoldDetailView: View {
     @EnvironmentObject var cartViewModel: CartViewModel
     @EnvironmentObject var userViewModel: UserViewModel
     @Environment(\.presentationMode) var presentationMode
+    @Binding var selectedTab: Int
     
     var hold: Hold
 
@@ -83,7 +84,9 @@ struct HoldDetailView: View {
                         .cornerRadius(8)
                 }
             } else {
-                NavigationLink(destination: AccountView()) {
+                Button(action: {
+                    self.selectedTab = 3
+                }) {
                     Text("Se connecter")
                         .padding()
                         .background(Color.pink.opacity(0.85))

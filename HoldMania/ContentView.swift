@@ -13,29 +13,35 @@ struct ContentView: View {
     @EnvironmentObject var orderViewModel : OrderViewModel
     @EnvironmentObject var cartViewModel : CartViewModel
     
+    @State private var selectedTab = 0
+    
     var body: some View {
-            TabView {
-                HomeView()
+            TabView(selection: $selectedTab) {
+                HomeView(selectedTab: $selectedTab)
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
+                    .tag(0)
                 
                 if userViewModel.isLoggedIn() {
                     CartView()
                         .tabItem {
                             Label("Panier", systemImage: "cart")
                         }
+                        .tag(1)
                     
                     OrderView()
                         .tabItem {
                             Label("Commandes", systemImage: "truck.box.fill")
                         }
+                        .tag(2)
                 }
                 
                 AccountView()
                     .tabItem {
                         Label("Compte", systemImage: "person")
                     }
+                    .tag(3)
         }
     }
     

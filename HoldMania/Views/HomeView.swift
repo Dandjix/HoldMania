@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel() // VueModel pour charger les données
+    @Binding var selectedTab: Int
     
     var body: some View {
         NavigationView {
@@ -23,7 +24,7 @@ struct HomeView: View {
                         .padding()
                 } else {
                     List(viewModel.holds) { hold in
-                        NavigationLink(destination: HoldDetailView(hold: hold)) {
+                        NavigationLink(destination: HoldDetailView(selectedTab: $selectedTab, hold: hold)) {
                             HStack {
                                 if UIImage(named: hold.imageURL) != nil {
                                     Image(hold.imageURL)
@@ -62,7 +63,7 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(selectedTab: .constant(0))
     }
 }
 
