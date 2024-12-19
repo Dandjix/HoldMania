@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C43CE6C02D089785001F5C21 /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43CE6BF2D089785001F5C21 /* Constantes.swift */; };
+		C451CF172D145BBE00DAD073 /* CartRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C451CF162D145BBE00DAD073 /* CartRowView.swift */; };
 		C4B67BAE2D008BFF00567529 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAD2D008BFF00567529 /* User.swift */; };
 		C4B67BB02D008C1000567529 /* Hold.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BAF2D008C1000567529 /* Hold.swift */; };
 		C4B67BB22D008C2300567529 /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B67BB12D008C2300567529 /* OrderItem.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		C43CE6BF2D089785001F5C21 /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
+		C451CF162D145BBE00DAD073 /* CartRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRowView.swift; sourceTree = "<group>"; };
 		C4B67BAD2D008BFF00567529 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C4B67BAF2D008C1000567529 /* Hold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hold.swift; sourceTree = "<group>"; };
 		C4B67BB12D008C2300567529 /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
@@ -70,6 +72,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C451CF152D145B5800DAD073 /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				C4B67BBD2D008D0200567529 /* CartView.swift */,
+				C451CF162D145BBE00DAD073 /* CartRowView.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
 		C4B67BAA2D008BB600567529 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,9 +97,9 @@
 		C4B67BAB2D008BBB00567529 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C451CF152D145B5800DAD073 /* Cart */,
 				C4B67BB72D008C8400567529 /* HomeView.swift */,
 				C4B67BB92D008C9B00567529 /* HoldDetailView.swift */,
-				C4B67BBD2D008D0200567529 /* CartView.swift */,
 				C4B67BBF2D008D1700567529 /* AccountView.swift */,
 				FF267EC42D11B6B7003F764F /* OrderView.swift */,
 				FFA905C82D146EBF00E95865 /* SearchHolds.swift */,
