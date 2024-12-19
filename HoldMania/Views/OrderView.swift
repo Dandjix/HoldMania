@@ -18,8 +18,8 @@ struct OrderView: View {
         VStack{
             List(orderViewModel.orders){ order in
                 VStack{
-                    Text("Number of holds in order : \(order.totalNumberOfHoldsAsInt)")
-                    Text("Total price : \(order.totalOrderPriceAsDouble,specifier: "%.2f")")
+                    Text("Nombre de prises totales dans la commande : \(order.totalNumberOfHoldsAsInt)")
+                    Text("Prix total : \(order.totalOrderPriceAsDouble,specifier: "%.2f")")
                     Text("Date d'achat : \(order.formattedDateOrder)")
                 }
             }

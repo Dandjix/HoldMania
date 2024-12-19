@@ -26,6 +26,9 @@ class CartViewModel: ObservableObject {
     }
     
     func load(userId: Int, completion: @escaping (Bool, Error?) -> Void = { _,_ in }) {
+        
+//        print("begin cart load")
+        
         isLoading = true
         guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
             errorMessage = "URL invalide"
@@ -52,12 +55,12 @@ class CartViewModel: ObservableObject {
                     
                     if(decodedOrders.count == 0)
                     {
-                        self?.createOrder(userId: userId, completion: { orderId, error in
-                            if error == nil{
+                        self?.createCart(userId: userId, completion: { orderId, error in
+                            if orderId != -1{
                                 self?.cartId = orderId
                                 self?.loadCartItems(cartId: orderId, completion: completion)
                             } else {
-                                self?.errorMessage = "Failed to create order"
+                                self?.errorMessage = "Failed to create order : \(error!)"
                                 completion(false, error)
                             }
                         })
@@ -87,7 +90,7 @@ class CartViewModel: ObservableObject {
     }
     
     
-    func createOrder(userId: Int, completion: @escaping (Int, Error?) -> Void) {
+    func createCart(userId: Int, completion: @escaping (Int, Error?) -> Void) {
         guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
             completion(-1, CartError.invalidURL)
             return
@@ -95,38 +98,34 @@ class CartViewModel: ObservableObject {
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        // Construct the new order object or payload (customize based on your API requirements)
-        let newOrder = ["userId": userId]  // Example payload, customize based on your needs
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: newOrder, options: [])
-            request.httpBody = jsonData
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                DispatchQueue.main.async {
-                    if let error = error {
-                        completion(-1, error)
-                        return
-                    }
-                    
-                    guard let data = data else {
-                        completion(-1, CartError.internalError)
-                        return
-                    }
-                    
-                    do {
-                        let order = try JSONDecoder().decode(Order.self, from: data)
-                        completion(order.id, nil)
-                    } catch {
-                        completion(-1, error)
-                    }
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    completion(-1, error)
+                    return
                 }
-            }.resume()
-            
-        } catch {
-            completion(-1, error)
-        }
+                
+                guard let data = data else {
+                    completion(-1, CartError.internalError)
+                    return
+                }
+                
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                         let idOrder = json["idOrder"] as? Int {
+//                        print("success ! idOrder : \(idOrder)")
+                          completion(idOrder, nil)
+                      } else {
+//                          print("Invalid JSON structure or `idOrder` not found")
+                          completion(-1, CartError.internalError)
+                      }
+                } catch {
+//                    print("data could not be decoded")
+                    completion(-1, error)
+                }
+            }
+        }.resume()
     }
 
     // Helper function to load cart items (GET request)
@@ -238,6 +237,39 @@ class CartViewModel: ObservableObject {
                     self.refreshCart() // Refresh cart regardless of outcome
                 }
             }.resume()
+        }
+    }
+    
+    func validateCart(idClient: Int) async {
+        
+//        print("validating cart ...")
+        
+        guard let url = URL(string: "\(API.baseURL)/orders?idOrder=\(self.cartId)") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        
+        do {
+//            print("awaiting...")
+            // Perform the PATCH request and await the result
+            let (_, response) = try await URLSession.shared.data(for: request)
+            
+//            print("await end")
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                print("Server responded with an error")
+                return
+            }
+            
+            // Success: Proceed with the next steps
+            DispatchQueue.main.async {
+                print("PATCH request succeeded")
+            }
+        } catch {
+            print("Error making PATCH request: \(error.localizedDescription)")
         }
     }
 

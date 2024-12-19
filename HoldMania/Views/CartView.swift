@@ -9,11 +9,13 @@ import SwiftUI
 
 struct CartView: View {
     @EnvironmentObject var cartViewModel: CartViewModel
+    @EnvironmentObject var userViewModel: UserViewModel
+    @EnvironmentObject var orderViewModel : OrderViewModel
     
     var body: some View {
         NavigationView {
             VStack {
-//                Text("\(cartViewModel.cartId)")
+                Text("\(cartViewModel.cartId)")
                 if cartViewModel.isLoading{
                     Text("Chargement...")
                 }
@@ -43,6 +45,15 @@ struct CartView: View {
                     
                     Button("Valider le panier") {
                         // Action pour valider le panier (ajout à la base de données, etc.)
+                        Task {
+                            // Await the validateCart method to ensure it's completed before continuing
+                            await cartViewModel.validateCart(idClient: userViewModel.user!.idClient)
+                            
+                            print("idClient : \(userViewModel.user!.idClient)")
+                            // After validateCart completes, load the order and cart details
+                            orderViewModel.load(userId: userViewModel.user!.idClient)
+                            cartViewModel.load(userId: userViewModel.user!.idClient)
+                        }
                     }
                     .padding()
                     .background(Color.green)
