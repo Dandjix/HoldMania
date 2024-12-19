@@ -15,7 +15,7 @@ struct CartView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("\(cartViewModel.cartId)")
+//                Text("\(cartViewModel.cartId)")
                 if cartViewModel.isLoading{
                     Text("Chargement...")
                 }
