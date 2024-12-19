@@ -49,10 +49,10 @@ struct CartView: View {
                             // Await the validateCart method to ensure it's completed before continuing
                             await cartViewModel.validateCart(idClient: userViewModel.user!.idClient)
                             
-                            print("idClient : \(userViewModel.user!.idClient)")
-                            // After validateCart completes, load the order and cart details
+//                            print("idClient : \(userViewModel.user!.idClient)")
+//                            // After validateCart completes, load the order and cart details
                             orderViewModel.load(userId: userViewModel.user!.idClient)
-                            cartViewModel.load(userId: userViewModel.user!.idClient)
+//                            cartViewModel.load(userId: userViewModel.user!.idClient)
                         }
                     }
                     .padding()

@@ -25,143 +25,121 @@ class CartViewModel: ObservableObject {
         items.reduce(0) { $0 + $1.totalPriceAsDouble }
     }
     
-    func load(userId: Int, completion: @escaping (Bool, Error?) -> Void = { _,_ in }) {
-        
-//        print("begin cart load")
-        
-        isLoading = true
-        guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
-            errorMessage = "URL invalide"
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self?.errorMessage = "Erreur réseau : \(error.localizedDescription)"
-                    return
-                }
-                
-                guard let data = data else {
-                    self?.errorMessage = "Aucune donnée reçue."
-                    return
-                }
-                
+    func load(userId: Int) async throws {
+        print("Loading cart...")
 
-                do {
-                    var decodedOrders = try JSONDecoder().decode([Order].self, from: data)
-                    
-                    decodedOrders = decodedOrders.filter{!$0.isSentAsBool}
-                    
-                    if(decodedOrders.count == 0)
-                    {
-                        self?.createCart(userId: userId, completion: { orderId, error in
-                            if orderId != -1{
-                                self?.cartId = orderId
-                                self?.loadCartItems(cartId: orderId, completion: completion)
-                            } else {
-                                self?.errorMessage = "Failed to create order : \(error!)"
-                                completion(false, error)
-                            }
-                        })
-                    }
-                    else if(decodedOrders.count == 1)
-                    {
-                        let cartId = decodedOrders[0].idOrder
-                        self?.cartId = cartId
-                        self?.loadCartItems(cartId: cartId, completion: completion)
-                    }
-                    else
-                    {
-                        throw CartError.multipleCartsNotAllowed
-                    }
-                    
-                    self?.isLoading = false
-                    
-                } catch CartError.multipleCartsNotAllowed {
-                    self?.errorMessage = "Erreur : Plusieurs paniers détectés."
-                    completion(false, CartError.multipleCartsNotAllowed)
-                } catch {
-                    self?.errorMessage = "Erreur lors de la lecture des données."
-                    completion(false, error)
-                }
+        self.isLoading = true
+        defer { self.isLoading = false } // Ensure `isLoading` is reset when the function exits
+
+        // Construct URL
+        guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
+            throw CartError.invalidURL
+        }
+
+        do {
+            // Fetch data from the server
+            
+            let (data, response) = try await URLSession.shared.data(from: url)
+
+            print("got data from request")
+            
+            // Validate the HTTP response
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                throw CartError.internalError
             }
-        }.resume()
+
+            print("past guard")
+            
+            var decodedOrders : [Order] = []
+            // Decode orders
+            do
+            {
+                decodedOrders = try JSONDecoder().decode([Order].self, from: data)
+            }
+            catch
+            {
+                print("decoding orders failed")
+                throw CartError.internalError
+            }
+            decodedOrders = decodedOrders.filter { !$0.isSentAsBool }
+
+            print("past decoder")
+            
+            if decodedOrders.isEmpty {
+                // Create a new cart if no orders exist
+                let orderId = try await createCart(userId: userId)
+                self.cartId = orderId
+                
+                print("load from no cart")
+                try await loadCartItems(cartId: orderId)
+                print("done")
+            } else if decodedOrders.count == 1 {
+                // Use the existing cart
+                let cartId = decodedOrders[0].idOrder
+                self.cartId = cartId
+                print("load from cart exists")
+                try await loadCartItems(cartId: cartId)
+                print("done")
+            } else {
+                print("more than 1 cart")
+                // Handle multiple carts
+                throw CartError.multipleCartsNotAllowed
+            }
+        } catch {
+            self.errorMessage = "Erreur : \(error.localizedDescription)"
+            throw error
+        }
     }
     
     
-    func createCart(userId: Int, completion: @escaping (Int, Error?) -> Void) {
+    func createCart(userId: Int) async throws -> Int {
         guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
-            completion(-1, CartError.invalidURL)
-            return
+            throw CartError.invalidURL
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    completion(-1, error)
-                    return
-                }
-                
-                guard let data = data else {
-                    completion(-1, CartError.internalError)
-                    return
-                }
-                
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                         let idOrder = json["idOrder"] as? Int {
-//                        print("success ! idOrder : \(idOrder)")
-                          completion(idOrder, nil)
-                      } else {
-//                          print("Invalid JSON structure or `idOrder` not found")
-                          completion(-1, CartError.internalError)
-                      }
-                } catch {
-//                    print("data could not be decoded")
-                    completion(-1, error)
-                }
-            }
-        }.resume()
-    }
-
-    // Helper function to load cart items (GET request)
-    func loadCartItems(cartId: Int, completion: @escaping (Bool, Error?) -> Void) {
-        guard let url = URL(string: "\(API.baseURL)/orders/lines/\(cartId)") else {
-            completion(false, CartError.invalidURL)
-            return
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            throw CartError.internalError
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
-                    completion(false, error)
-                    return
-                }
-                
-                guard let data = data else {
-                    self.errorMessage = "Aucune donnée reçue."
-                    completion(false, nil)
-                    return
-                }
-                
-                do {
-                    // Decode the cart items (assuming an appropriate struct for items)
-                    let items = try JSONDecoder().decode([OrderItem].self, from: data)
-                    self.items = items  // Store the cart items
-                    self.errorMessage = nil
-                    completion(true, nil)  // Success
-                } catch {
-                    self.errorMessage = "Erreur lors de la lecture des articles du panier."
-                    completion(false, error)
-                }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+               let idOrder = json["idOrder"] as? Int {
+                return idOrder
+            } else {
+                throw CartError.internalError
             }
-        }.resume()
+        } catch {
+            throw CartError.internalError
+        }
     }
+
+
+    func loadCartItems(cartId: Int) async throws {
+        guard let url = URL(string: "\(API.baseURL)/orders/lines/\(cartId)") else {
+            throw CartError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            throw CartError.internalError
+        }
+        
+        do {
+            let items = try JSONDecoder().decode([OrderItem].self, from: data)
+            self.items = items
+            self.errorMessage = nil
+        } catch {
+            self.errorMessage = "Erreur lors de la lecture des articles du panier."
+            throw CartError.internalError
+        }
+    }
+
     
     func getQuantityInCart(holdId: Int) -> Int {
         if let orderItem = items.first(where: { $0.idHold == holdId }) {
@@ -194,7 +172,9 @@ class CartViewModel: ObservableObject {
                     if let error = error {
                         self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
                     }
-                    self.refreshCart() // Refresh cart regardless of outcome
+                    Task{
+                        await self.refreshCart() // Refresh cart regardless of outcome
+                    }
                 }
             }.resume()
             
@@ -214,7 +194,9 @@ class CartViewModel: ObservableObject {
                     if let error = error {
                         self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
                     }
-                    self.refreshCart() // Refresh cart regardless of outcome
+                    Task{
+                        await self.refreshCart() // Refresh cart regardless of outcome
+                    }
                 }
             }.resume()
             
@@ -234,16 +216,16 @@ class CartViewModel: ObservableObject {
                     if let error = error {
                         self.errorMessage = "Erreur réseau : \(error.localizedDescription)"
                     }
-                    self.refreshCart() // Refresh cart regardless of outcome
+                    Task{
+                        await self.refreshCart() // Refresh cart regardless of outcome
+                    }
+
                 }
             }.resume()
         }
     }
     
     func validateCart(idClient: Int) async {
-        
-//        print("validating cart ...")
-        
         guard let url = URL(string: "\(API.baseURL)/orders?idOrder=\(self.cartId)") else {
             print("Invalid URL")
             return
@@ -251,38 +233,37 @@ class CartViewModel: ObservableObject {
 
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
-        
+
         do {
-//            print("awaiting...")
-            // Perform the PATCH request and await the result
             let (_, response) = try await URLSession.shared.data(for: request)
-            
-//            print("await end")
-            
+
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 print("Server responded with an error")
                 return
             }
-            
-            // Success: Proceed with the next steps
-            DispatchQueue.main.async {
-                print("PATCH request succeeded")
+
+            print("PATCH request succeeded")
+
+            // Load the cart for the user asynchronously
+            do {
+                try await self.load(userId: idClient)
+            } catch {
+                print("Error loading cart: \(error.localizedDescription)")
             }
         } catch {
             print("Error making PATCH request: \(error.localizedDescription)")
         }
     }
 
-    // Helper function to refresh the cart
-    private func refreshCart() {
-        loadCartItems(cartId: self.cartId) { success, error in
-            if let error = error {
-                self.errorMessage = "Erreur lors de la mise à jour du panier : \(error.localizedDescription)"
-            } else if !success {
-                self.errorMessage = "La mise à jour du panier a échoué."
-            } else {
-                self.errorMessage = nil // Clear error if successful
-            }
+
+    private func refreshCart() async {
+        do {
+            try await loadCartItems(cartId: self.cartId)
+            self.errorMessage = nil // Clear error if successful
+        }catch{
+            self.errorMessage = "could not refresh cart" // Clear error if successful
         }
     }
+
+
 }
