@@ -86,7 +86,10 @@ struct AccountView: View {
                     isLoading = false
                     if success {
                         orderViewModel.load(userId: userViewModel.user!.idClient)
-                        cartViewModel.load(userId: userViewModel.user!.idClient)
+                        Task{
+                            try await cartViewModel.load(userId: userViewModel.user!.idClient)
+                        }
+
                         // Les informations de l'utilisateur sont automatiquement mises à jour dans le ViewModel
                         self.presentationMode.wrappedValue.dismiss()
 

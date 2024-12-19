@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CartView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject private var viewModel = CartViewModel()
+    @EnvironmentObject private var viewModel : CartViewModel
+    @EnvironmentObject private var userViewModel : UserViewModel
 
     var body: some View {
         NavigationView {
@@ -77,7 +78,9 @@ struct CartView: View {
                 }
             }
             .onAppear {
-                viewModel.load(userId: 1) // Change to appropriate userId
+                Task{
+                    try await viewModel.load(userId: userViewModel.user!.idClient)
+                }
             }
         }
     }
