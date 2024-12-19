@@ -12,6 +12,7 @@ struct ContentView: View {
     @EnvironmentObject var userViewModel : UserViewModel
     @EnvironmentObject var orderViewModel : OrderViewModel
     @EnvironmentObject var cartViewModel : CartViewModel
+    @EnvironmentObject var homeViewModel : HomeViewModel
     
     @State private var selectedTab = 0
     
@@ -52,6 +53,8 @@ struct ContentView: View {
                 .environmentObject(CartViewModel())
                 .environmentObject(UserViewModel())
                 .environmentObject(OrderViewModel())
+                .environmentObject(HomeViewModel())
+                .environmentObject(SearchHoldViewModel())
         }
     }
 

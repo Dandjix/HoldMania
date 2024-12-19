@@ -13,14 +13,37 @@ class HomeViewModel: ObservableObject {
     @Published var errorMessage: String? = nil
 
     init() {
-        fetchHolds() // Charger les données à l'initialisation
+        fetchHolds(colorOptions: [], levelOptions: [], searchName: "") // Charger les données à l'initialisation
     }
 
-    private func fetchHolds() {
-        guard let url = URL(string: "\(API.baseURL)/holds") else {
-            errorMessage = "URL invalide"
-            return
+    public func fetchHolds(colorOptions : [Int], levelOptions : [Int], searchName : String) {
+        
+        var query : [String] = []
+        
+        if colorOptions.count > 0 {
+            let colorString = colorOptions.map { String($0) }.joined(separator: ",")
+            query.append("idColors=\(colorString)")
         }
+        
+        if levelOptions.count > 0 {
+            let levelString = levelOptions.map { String($0) }.joined(separator: ",")
+            query.append("idClientLevels=\(levelString)")
+        }
+        
+        if(searchName != "")
+        {
+            let entry = "searchName=\(searchName)"
+            query.append(entry)
+        }
+        
+        //form query using ? and &
+        let queryString = query.isEmpty ? "" : "?" + query.joined(separator: "&")
+         
+         // Form the complete URL by appending the query string to the base URL
+         guard let url = URL(string: "\(API.baseURL)/holds\(queryString)") else {
+             errorMessage = "URL invalide"
+             return
+         }
         
         isLoading = true // Démarrer le chargement
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
