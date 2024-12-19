@@ -11,7 +11,7 @@ struct SizeConstants {
     static let expandedHeight: CGFloat = 600  // Height when expanded
     static let collapsedHeight: CGFloat = 50  // Height when collapsed
     static let minimumHeight: CGFloat = 50    // Minimum height to collapse to
-    static let dragThreshold: CGFloat = 150   // Threshold for collapsing or expanding
+    static let dragThreshold: CGFloat = 350   // Threshold for collapsing or expanding
 }
 
 struct SearchHolds: View {
