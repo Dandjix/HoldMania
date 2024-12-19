@@ -8,79 +8,75 @@
 import SwiftUI
 
 struct CartView: View {
-    @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var viewModel : CartViewModel
-    @EnvironmentObject private var userViewModel : UserViewModel
+    @EnvironmentObject private var cartViewModel: CartViewModel
+    @EnvironmentObject private var userViewModel: UserViewModel
+    @EnvironmentObject private var orderViewModel: OrderViewModel
 
     var body: some View {
-        NavigationView {
-            VStack {
-                if viewModel.items.isEmpty {
-                    VStack {
-                        Text("Votre panier est vide.")
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
-                    List {
-                        ForEach(viewModel.items) { item in
-                            CartRowView(
-                                orderItem: item,
-                                onUpdateQuantity: { updatedItem, delta in
-                                    viewModel.updateCartQuantity(holdId: updatedItem.idHold, quantity: updatedItem.quantity + delta)
-                                }
-                            )
-                        }
-                    }
-                    .listStyle(.plain)
-                }
-
-                if !viewModel.items.isEmpty {
-                    VStack {
-                        HStack {
-                            Text("Total :")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                            Spacer()
-                            Text(String(format: "%.2f €", viewModel.totalPrice))
-                                .font(.title2)
-                                .fontWeight(.bold)
-                        }
+        VStack {
+            if cartViewModel.isLoading {
+                Text("Chargement...")
+            } else if let errorMessage = cartViewModel.errorMessage {
+                Text("Erreur : \(errorMessage)")
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+                    .padding()
+            } else if cartViewModel.items.isEmpty {
+                VStack {
+                    Text("Votre panier est vide.")
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
                         .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(10)
-                        .padding(.horizontal)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List {
+                    ForEach(cartViewModel.items) { item in
+                        CartRowView(
+                            orderItem: item,
+                            onUpdateQuantity: { updatedItem, delta in
+                                cartViewModel.updateCartQuantity(holdId: updatedItem.idHold, quantity: updatedItem.quantity + delta)
+                            }
+                        )
+                    }
+                }
+                .listStyle(.plain)
 
-                        Button(action: {
-                            print("Commande validée !")
-                        }) {
-                            Text("Acheter")
-                                .font(.headline)
-                                .frame(maxWidth: .infinity, minHeight: 50)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
+                VStack {
+                    HStack {
+                        Text("Total :")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Text(String(format: "%.2f €", cartViewModel.totalPrice))
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+
+                    Button(action: {
+                        Task {
+                            if let user = userViewModel.user {
+                                await cartViewModel.validateCart(idClient: user.idClient)
+                                orderViewModel.load(userId: user.idClient)
+                            }
                         }
-                        .padding(.horizontal)
-                        .padding(.bottom)
+                    }) {
+                        Text("Valider le panier")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, minHeight: 50)
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
                     }
-                    .background(Color.white)
-                    .shadow(radius: 5)
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 }
-            }
-            .navigationTitle("Votre Panier")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Fermer") {
-                        dismiss()
-                    }
-                }
-            }
-            .onAppear {
-                Task{
-                    try await viewModel.load(userId: userViewModel.user!.idClient)
-                }
+                .background(Color.white)
+                .shadow(radius: 5)
             }
         }
     }
