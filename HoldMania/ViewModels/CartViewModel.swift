@@ -32,26 +32,24 @@ class CartViewModel: ObservableObject {
         self.isLoading = true
         print("2")
         defer { self.isLoading = false } // Ensure `isLoading` is reset when the function exits
-        
-        print("3")
+
         // Construct URL
         guard let url = URL(string: "\(API.baseURL)/orders/\(userId)") else {
             throw CartError.invalidURL
         }
-        print("4")
 
         do {
             // Fetch data from the server
-            print("5")
+            
             let (data, response) = try await URLSession.shared.data(from: url)
-            print("6")
+
             print("got data from request")
-            print("7")
+            
             // Validate the HTTP response
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 throw CartError.internalError
             }
-            print("8")
+
             print("past guard")
             
             var decodedOrders : [Order] = []
@@ -83,7 +81,7 @@ class CartViewModel: ObservableObject {
                 self.cartId = cartId
                 print("load from cart exists")
                 try await loadCartItems(cartId: cartId)
-                print("done load cart item")
+                print("done")
             } else {
                 print("more than 1 cart")
                 // Handle multiple carts
@@ -127,18 +125,17 @@ class CartViewModel: ObservableObject {
         guard let url = URL(string: "\(API.baseURL)/orders/lines/\(cartId)") else {
             throw CartError.invalidURL
         }
-        print("1")
+        
         let (data, response) = try await URLSession.shared.data(from: url)
-        print("2")
+        
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
             throw CartError.internalError
         }
-        print("3")
+        
         do {
             let items = try JSONDecoder().decode([OrderItem].self, from: data)
             self.items = items
             self.errorMessage = nil
-            print("4")
         } catch {
             self.errorMessage = "Erreur lors de la lecture des articles du panier."
             throw CartError.internalError
