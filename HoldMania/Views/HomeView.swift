@@ -8,22 +8,27 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var viewModel = HomeViewModel() // VueModel pour charger les données
+    @EnvironmentObject private var homeViewModel : HomeViewModel // VueModel pour charger les données
+    @EnvironmentObject private var searchHoldsViewModel : SearchHoldViewModel
     @Binding var selectedTab: Int
     
     var body: some View {
         NavigationView {
             VStack {
-                if viewModel.isLoading {
+                
+                SearchHolds()
+                    .padding()
+                
+                if homeViewModel.isLoading {
                     ProgressView("Chargement des prises...")
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
-                } else if let errorMessage = viewModel.errorMessage {
+                } else if let errorMessage = homeViewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .padding()
                 } else {
-                    List(viewModel.holds) { hold in
+                    List(homeViewModel.holds) { hold in
                         NavigationLink(destination: HoldDetailView(selectedTab: $selectedTab, hold: hold)) {
                             HStack {
                                 if UIImage(named: hold.imageURL) != nil {

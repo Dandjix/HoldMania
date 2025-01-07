@@ -19,6 +19,8 @@ struct HoldManiaApp: App {
     @StateObject private var cartViewModel = CartViewModel()
     @StateObject private var userViewModel = UserViewModel()
     @StateObject private var orderViewModel = OrderViewModel()
+    @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var searchHoldViewModel = SearchHoldViewModel()
 
     var body: some Scene {
         WindowGroup {
@@ -26,6 +28,8 @@ struct HoldManiaApp: App {
                 .environmentObject(userViewModel)
                 .environmentObject(cartViewModel)
                 .environmentObject(orderViewModel)
+                .environmentObject(homeViewModel)
+                .environmentObject(searchHoldViewModel)
 
         }
     }

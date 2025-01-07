@@ -28,9 +28,7 @@ class CartViewModel: ObservableObject {
     func load(userId: Int) async throws {
         print("Loading cart...")
 
-        print("1")
         self.isLoading = true
-        print("2")
         defer { self.isLoading = false } // Ensure `isLoading` is reset when the function exits
 
         // Construct URL
