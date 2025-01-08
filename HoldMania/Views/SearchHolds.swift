@@ -83,23 +83,44 @@ struct SearchHolds: View {
                             .frame(width: 300)
                             .frame(maxWidth: .infinity)
                         Button(action: {
-                            Task{
-                                await searchHoldsViewModel.search(homeViewModel:homeViewModel)
+                            Task {
+                                await searchHoldsViewModel.search(homeViewModel: homeViewModel)
                             }
-                        }){
-                            Text("Search")
+                        }) {
+                            Text("Chercher")
+                                .font(.headline)
                                 .padding()
+                                .frame(maxWidth: .infinity)
                                 .background(Color.blue)
                                 .foregroundColor(.white)
-                                .cornerRadius(8)
+                                .cornerRadius(10)
+                                .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 2)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 10)
+                        
+                        HStack{
+                            Spacer()
+                            Image(systemName: "arrow.up")
+                            Spacer()
+                        }
+                        .padding()
+   
                     }
                     else
                     {
-                        Text("Options de recherche")
+                        HStack{
+                            Spacer()
+                            Text("Options de recherche")
+                            Spacer()
+                        }
                             .font(.headline)
+                        HStack{
+                            Spacer()
+                            Image(systemName: "arrow.down")
+                            Spacer()
+                        }
+
                     }
                  
                 }
