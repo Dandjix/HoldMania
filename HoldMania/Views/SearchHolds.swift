@@ -49,6 +49,7 @@ struct SearchHolds: View {
                                 }
                             )) {
                                 Text(color.holdColorName)
+                                    .font(.system(size:13))
                             }
                             .toggleStyle(CheckBoxToggleStyle()) // Use CheckBox toggle style
                         }
@@ -73,6 +74,7 @@ struct SearchHolds: View {
                                 }
                             )) {
                                 Text(level.clientLevelName)
+                                    .font(.system(size:13))
                             }
                             .toggleStyle(CheckBoxToggleStyle()) // Use CheckBox toggle style
                         }
