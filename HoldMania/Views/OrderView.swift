@@ -17,11 +17,39 @@ struct OrderView: View {
         
         VStack{
             List(orderViewModel.orders){ order in
-                VStack{
-                    Text("Nombre de prises totales dans la commande : \(order.totalNumberOfHoldsAsInt)")
-                    Text("Prix total : \(order.totalOrderPriceAsDouble,specifier: "%.2f")")
-                    Text("Date d'achat : \(order.formattedDateOrder)")
-                }
+                VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "cart.fill")
+                                    .foregroundColor(.blue)
+                                Text("ID Commande : \(order.id)")
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                            }
+                            
+                            HStack {
+                                Text("Prises totales :")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Text("\(order.totalNumberOfHoldsAsInt)")
+                            }
+                            
+                            HStack {
+                                Text("Prix total :")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Text(String(format: "%.2f €", order.totalOrderPriceAsDouble))
+                                    .foregroundColor(.green)
+                            }
+                            
+                            HStack {
+                                Text("Date d'achat :")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Text(order.formattedDateOrder)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding()
             }
             
             if(orderViewModel.isLoading)

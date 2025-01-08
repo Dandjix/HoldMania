@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AccountView: View {
-    @State private var email: String = "john.doe@orange.fr"
+    @State private var email: String = "jane.smith@outlook.com"
+//    @State private var email: String = "john.doe@orange.fr"
     @State private var isLoading: Bool = false
     @State private var errorMessage: String? = nil
     
